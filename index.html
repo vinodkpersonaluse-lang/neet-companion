@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>NEET PG Companion</title>
+<link rel="manifest" href="manifest.json"><link rel="icon" href="icon.svg">
+<meta name="theme-color" content="#0E7C86">
+<style>
+:root{--bg:#F1F7F7;--card:#fff;--ink:#16313A;--mut:#5A767E;--pri:#0E7C86;--pri2:#0A5560;--red:#D64550;--line:#D5E5E7;--soft:#E3F2F1;--ok:#2E8B57}
+@media(prefers-color-scheme:dark){:root{--bg:#0A1A1E;--card:#11282E;--ink:#E3F1F2;--mut:#8DAEB3;--pri:#2FB3BE;--pri2:#0E5A66;--line:#22413F;--soft:#16363A}}
+*{box-sizing:border-box;margin:0}
+body{font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+header{background:var(--pri2);color:#fff;padding:calc(14px + env(safe-area-inset-top)) 18px 0;position:relative;overflow:hidden}
+header h1{font-size:1.25rem;font-weight:650}header p{opacity:.8;font-size:.85rem}
+.top{display:flex;justify-content:space-between;align-items:center}
+.gear{background:rgba(255,255,255,.15);color:#fff;border:0;border-radius:10px;padding:8px 12px;font:inherit;font-size:.85rem}
+.ecg{display:block;width:100%;height:46px;margin-top:6px}
+.ecg path{fill:none;stroke:#ff8f98;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:900;stroke-dashoffset:900;animation:beat 2.4s ease-out forwards}
+@keyframes beat{to{stroke-dashoffset:0}}
+@media(prefers-reduced-motion:reduce){.ecg path{animation:none;stroke-dashoffset:0}}
+main{max-width:640px;margin:0 auto;padding:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+h2{font-size:1.05rem;margin-bottom:8px}.mut{color:var(--mut);font-size:.85rem}
+.count{display:flex;align-items:baseline;gap:8px}.count b{font-size:3rem;line-height:1;color:var(--pri)}
+.note{border-left:4px solid var(--red);background:var(--soft)}
+input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:8px}
+textarea{min-height:70px;resize:vertical}
+button{font:inherit;cursor:pointer}
+.btn{background:var(--pri);color:#fff;border:0;border-radius:10px;padding:10px 16px;font-weight:600}
+.btn.alt{background:var(--soft);color:var(--pri2)}.btn.red{background:var(--red)}
+@media(prefers-color-scheme:dark){.btn.alt{color:var(--ink)}.btn{color:#04181B}}
+.row{display:flex;gap:8px;align-items:center}.row>*{flex:1}.row .fit{flex:0 0 auto}
+.item{display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.item:first-of-type{border-top:0}.item .t{flex:1}
+.chip{font-size:.72rem;background:var(--soft);color:var(--pri2);padding:2px 8px;border-radius:99px}
+@media(prefers-color-scheme:dark){.chip{color:var(--ink)}}
+.chip.r{background:#f9dfe1;color:#8d1f2a}
+.done .t{text-decoration:line-through;color:var(--mut)}
+.x{background:0;border:0;color:var(--mut);font-size:1.2rem;padding:4px 8px}
+.bars{display:flex;gap:8px;align-items:flex-end;height:90px}
+.bars div{flex:1;text-align:center;font-size:.7rem;color:var(--mut)}
+.bars i{display:block;background:var(--pri);border-radius:6px 6px 0 0;min-height:3px;margin-bottom:4px}
+.fc{min-height:170px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:1.15rem;padding:20px;cursor:pointer;border:2px dashed var(--pri);border-radius:14px;margin-bottom:10px}
+.timer{font-size:4.2rem;font-weight:700;text-align:center;font-variant-numeric:tabular-nums;color:var(--pri);margin:8px 0}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;background:0;border:0;padding:14px 0;color:var(--mut);font-size:.8rem;font-weight:600;border-top:3px solid transparent}
+nav button.on{color:var(--pri);border-top-color:var(--red)}
+dialog{border:0;border-radius:16px;padding:18px;width:min(92vw,480px);background:var(--card);color:var(--ink)}
+dialog::backdrop{background:rgba(0,0,0,.5)}
+:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+</style></head><body>
+<header><div class="top"><div><h1 id="hi"></h1><p>NEET PG Companion</p></div><button class="gear" data-a="set">Settings</button></div>
+<svg class="ecg" viewBox="0 0 400 46" preserveAspectRatio="none" aria-hidden="true"><path d="M0 28h110l12-14 12 26 14-34 14 40 10-18h226"/></svg></header>
+<main id="m"></main>
+<nav id="nav"></nav>
+<dialog id="dlg"><h2>Settings</h2>
+<label class="mut">Her name</label><input id="sn">
+<label class="mut">NEET PG exam date</label><input id="sd" type="date">
+<label class="mut">Love notes (one per line, a new one shows each day)</label><textarea id="sl" rows="6"></textarea>
+<div class="row"><button class="btn" data-a="ssave">Save</button><button class="btn alt" data-a="exp">Backup</button><button class="btn alt" data-a="imp">Restore</button><button class="btn alt" data-a="cls">Close</button></div>
+<input id="file" type="file" accept=".json" hidden></dialog>
+<script>
+const K='neetpg-v1',SUB=['Anatomy','Physiology','Biochemistry','Pathology','Pharmacology','Microbiology','Forensic Med','PSM','Medicine','Surgery','OBG','Pediatrics','Ortho','Ophthal','ENT','Derm','Psychiatry','Anaesthesia','Radiology'],WHY=['Concept gap','Forgot fact','Silly mistake','Misread question','Guessed wrong'],GAP=[1,7,30],BOX=[1,3,7,14,30];
+const def={name:'Doctor',date:'',notes:['You are going to be a brilliant doctor. I believe in you.','Rest is part of the plan. I am proud of you today.','Every topic you finish is one step closer. I am with you.','Your future patients are lucky to have you.'],tasks:[],topics:[],cards:[],mistakes:[],study:{}};
+let S;try{S={...def,...JSON.parse(localStorage.getItem(K)||'{}')}}catch(e){S={...def}}
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}};
+const $=s=>document.querySelector(s),ymd=d=>d.toLocaleDateString('en-CA'),td=()=>ymd(new Date());
+const add=(s,n)=>{const d=new Date(s+'T00:00');d.setDate(d.getDate()+n);return ymd(d)};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const opts=a=>a.map(x=>`<option>${x}</option>`).join('');
+let tab='today',rv=null,flip=false,T={mode:'focus',left:1500,end:0,run:false,iv:null};
+const TABS=[['today','Today'],['rev','Revise'],['cards','Cards'],['err','Errors'],['focus','Focus']];
+const mins=d=>S.study[d]||0;
+function head(){const h=new Date().getHours();$('#hi').textContent=(h<12?'Good morning, ':h<17?'Good afternoon, ':'Good evening, ')+S.name}
+function vToday(){
+ const dl=S.date?Math.ceil((new Date(S.date+'T00:00')-new Date())/864e5):null;
+ const n=S.notes.filter(Boolean),note=n.length?n[Math.floor(Date.now()/864e5)%n.length]:'';
+ const tk=S.tasks.map((t,i)=>({...t,i})).filter(t=>t.d===td());
+ const days=[...Array(7)].map((_,i)=>{const d=add(td(),i-6);return[d,mins(d)]}),mx=Math.max(60,...days.map(x=>x[1]));
+ const dueR=S.topics.filter(t=>t.stage<3&&add(t.on,GAP[t.stage])<=td()).length,dueC=S.cards.filter(c=>c.due<=td()).length;
+ return `<div class="card"><div class="count">${dl===null?'<span class="mut">Set your exam date in Settings</span>':dl>0?`<b>${dl}</b><span>days to NEET PG</span>`:dl===0?'<b>Today</b><span>You are ready. Go!</span>':'<span>Exam date has passed</span>'}</div></div>
+ <div class="card note"><div class="mut">Today's note</div><p>${esc(note)}</p></div>
+ <div class="card"><h2>Due today</h2><p>${dueR} topics to revise &middot; ${dueC} flashcards</p></div>
+ <div class="card"><h2>Today's plan</h2><div class="row"><input id="tt" placeholder="e.g. Pharmacology: autonomic drugs" style="margin:0"><button class="btn fit" data-a="tadd">Add</button></div>
+ ${tk.map(t=>`<div class="item ${t.ok?'done':''}"><input type="checkbox" style="width:22px;margin:0" ${t.ok?'checked':''} data-a="tck" data-i="${t.i}"><span class="t">${esc(t.t)}</span><button class="x" data-a="tdel" data-i="${t.i}" aria-label="Delete">&times;</button></div>`).join('')||'<p class="mut" style="margin-top:8px">Add what you plan to study today.</p>'}</div>
+ <div class="card"><h2>Study minutes, last 7 days</h2><div class="bars">${days.map(([d,m])=>`<div><i style="height:${Math.round(m/mx*70)}px"></i>${m}<br>${d.slice(8)}</div>`).join('')}</div></div>`}
+function vRev(){
+ const L=S.topics.map((t,i)=>({...t,i,due:t.stage<3?add(t.on,GAP[t.stage]):null}));
+ const due=L.filter(t=>t.due&&t.due<=td()),up=L.filter(t=>t.due&&t.due>td()).sort((a,b)=>a.due>b.due?1:-1),dn=L.filter(t=>!t.due);
+ const row=(t,b)=>`<div class="item"><div class="t">${esc(t.t)}<br><span class="chip">${t.s}</span> <span class="mut">${b}</span></div>${t.due&&t.due<=td()?`<button class="btn" data-a="rdone" data-i="${t.i}">Revised</button>`:''}<button class="x" data-a="rdel" data-i="${t.i}" aria-label="Delete">&times;</button></div>`;
+ return `<div class="card"><h2>I studied a topic today</h2><input id="rt" placeholder="Topic name"><select id="rs">${opts(SUB)}</select><button class="btn" data-a="radd">Add and schedule revisions</button><p class="mut" style="margin-top:6px">Revisions are set for day 1, day 7 and day 30.</p></div>
+ <div class="card"><h2>Revise now (${due.length})</h2>${due.map(t=>row(t,'due '+t.due)).join('')||'<p class="mut">Nothing due. Well done.</p>'}</div>
+ <div class="card"><h2>Coming up (${up.length})</h2>${up.map(t=>row(t,'on '+t.due)).join('')||'<p class="mut">No upcoming revisions.</p>'}</div>
+ ${dn.length?`<div class="card"><h2>Completed (${dn.length})</h2>${dn.map(t=>row(t,'all 3 revisions done')).join('')}</div>`:''}`}
+function vCards(){
+ const due=S.cards.map((c,i)=>({...c,i})).filter(c=>c.due<=td());
+ let r='';
+ if(rv!==null&&S.cards[rv]){const c=S.cards[rv];r=`<div class="card"><div class="fc" data-a="flip" tabindex="0">${esc(flip?c.b:c.f)}</div>${flip?`<div class="row"><button class="btn red" data-a="again">Again</button><button class="btn" data-a="good">Got it</button></div>`:'<p class="mut" style="text-align:center">Tap the card to reveal the answer</p>'}<button class="btn alt" style="margin-top:8px;width:100%" data-a="stop">End session</button></div>`}
+ else r=`<div class="card"><h2>${due.length} cards due</h2>${due.length?`<button class="btn" data-a="start">Start review</button>`:'<p class="mut">All caught up.</p>'}</div>`;
+ return r+`<div class="card"><h2>New flashcard</h2><textarea id="cf" placeholder="Front: question, drug, mnemonic"></textarea><textarea id="cb" placeholder="Back: answer"></textarea><button class="btn" data-a="cadd">Save card</button></div>
+ <div class="card"><h2>All cards (${S.cards.length})</h2>${S.cards.map((c,i)=>`<div class="item"><span class="t">${esc(c.f)}</span><button class="x" data-a="cdel" data-i="${i}" aria-label="Delete">&times;</button></div>`).join('')||'<p class="mut">No cards yet.</p>'}</div>`}
+function vErr(){
+ const cnt={};S.mistakes.forEach(m=>cnt[m.w]=(cnt[m.w]||0)+1);
+ return `<div class="card"><h2>Log a wrong MCQ</h2><textarea id="eq" placeholder="Question or topic"></textarea><div class="row"><select id="es">${opts(SUB)}</select><select id="ew">${opts(WHY)}</select></div><textarea id="ec" placeholder="Correct concept to remember"></textarea><button class="btn" data-a="eadd">Save</button></div>
+ ${S.mistakes.length?`<div class="card"><h2>Why I miss questions</h2>${Object.entries(cnt).map(([k,v])=>`<span class="chip r">${k}: ${v}</span> `).join('')}</div>`:''}
+ <div class="card"><h2>Mistake log (${S.mistakes.length})</h2>${S.mistakes.map((m,i)=>`<div class="item"><div class="t">${esc(m.q)}<br><b>${esc(m.c)}</b><br><span class="chip">${m.s}</span> <span class="chip r">${m.w}</span></div><button class="x" data-a="edel" data-i="${i}" aria-label="Delete">&times;</button></div>`).reverse().join('')||'<p class="mut">Nothing logged yet.</p>'}</div>`}
+const fmt=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+function vFocus(){return `<div class="card"><div class="mut" style="text-align:center">${T.mode==='focus'?'Focus session':'Break'}</div><div class="timer" id="tm">${fmt(T.left)}</div>
+ <div class="row"><button class="btn" data-a="tgo">${T.run?'Pause':'Start'}</button><button class="btn alt" data-a="trs">Reset</button></div></div>
+ <div class="card"><p>Studied today: <b>${mins(td())} min</b></p><p class="mut">25 minutes focus, 5 minutes break. Completed sessions are added to your chart.</p></div>`}
+function tick(){
+ if(!T.run)return;T.left=Math.max(0,Math.round((T.end-Date.now())/1000));const e=$('#tm');if(e)e.textContent=fmt(T.left);document.title=fmt(T.left)+' NEET PG';
+ if(T.left<=0){clearInterval(T.iv);T.run=false;if(T.mode==='focus'){S.study[td()]=mins(td())+25;save()}
+  try{navigator.vibrate&&navigator.vibrate([300,150,300]);'Notification'in window&&Notification.permission==='granted'&&new Notification(T.mode==='focus'?'Session done. Take a break.':'Break over. Back to it.')}catch(e){}
+  T.mode=T.mode==='focus'?'break':'focus';T.left=T.mode==='focus'?1500:300;document.title='NEET PG Companion';render()}}
+function render(){head();$('#nav').innerHTML=TABS.map(([k,l])=>`<button class="${tab===k?'on':''}" data-a="tab" data-i="${k}">${l}</button>`).join('');
+ $('#m').innerHTML={today:vToday,rev:vRev,cards:vCards,err:vErr,focus:vFocus}[tab]()}
+const v=id=>($('#'+id).value||'').trim();
+const A={
+ tab:i=>{tab=i;rv=null;render();scrollTo(0,0)},
+ set:()=>{$('#sn').value=S.name;$('#sd').value=S.date;$('#sl').value=S.notes.join('\n');$('#dlg').showModal()},
+ cls:()=>$('#dlg').close(),
+ ssave:()=>{S.name=v('sn')||'Doctor';S.date=$('#sd').value;S.notes=$('#sl').value.split('\n').map(x=>x.trim()).filter(Boolean);save();$('#dlg').close();render()},
+ exp:()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:'application/json'}));a.download='neetpg-backup.json';a.click()},
+ imp:()=>$('#file').click(),
+ tadd:()=>{const t=v('tt');if(t){S.tasks.push({t,d:td(),ok:0});save();render()}},
+ tck:i=>{S.tasks[i].ok=!S.tasks[i].ok;save();render()},tdel:i=>{S.tasks.splice(i,1);save();render()},
+ radd:()=>{const t=v('rt');if(t){S.topics.push({t,s:$('#rs').value,on:td(),stage:0});save();render()}},
+ rdone:i=>{S.topics[i].stage++;save();render()},rdel:i=>{S.topics.splice(i,1);save();render()},
+ cadd:()=>{const f=v('cf'),b=v('cb');if(f&&b){S.cards.push({f,b,box:0,due:td()});save();render()}},
+ cdel:i=>{S.cards.splice(i,1);save();render()},
+ start:()=>{const d=S.cards.map((c,i)=>i).filter(i=>S.cards[i].due<=td());rv=d.length?d[0]:null;flip=false;render()},
+ flip:()=>{flip=!flip;render()},stop:()=>{rv=null;render()},
+ good:()=>{const c=S.cards[rv];c.box=Math.min(c.box+1,BOX.length-1);c.due=add(td(),BOX[c.box]);next()},
+ again:()=>{const c=S.cards[rv];c.box=0;c.due=add(td(),1);next()},
+ eadd:()=>{const q=v('eq');if(q){S.mistakes.push({q,c:v('ec'),s:$('#es').value,w:$('#ew').value});save();render()}},
+ edel:i=>{S.mistakes.splice(i,1);save();render()},
+ tgo:()=>{if(T.run){T.run=false;clearInterval(T.iv)}else{T.run=true;T.end=Date.now()+T.left*1000;T.iv=setInterval(tick,500);try{'Notification'in window&&Notification.permission==='default'&&Notification.requestPermission()}catch(e){}}render()},
+ trs:()=>{clearInterval(T.iv);T.run=false;T.mode='focus';T.left=1500;render()}
+};
+function next(){save();flip=false;const d=S.cards.map((c,i)=>i).filter(i=>S.cards[i].due<=td());rv=d.length?d[0]:null;render()}
+document.addEventListener('click',e=>{const el=e.target.closest('[data-a]');if(!el)return;const i=el.dataset.i;A[el.dataset.a](/^\d+$/.test(i||'')?+i:i)});
+document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.dataset.a==='flip'){e.preventDefault();A.flip()}});
+$('#file').onchange=e=>{const f=e.target.files[0];if(!f)return;f.text().then(t=>{try{S={...def,...JSON.parse(t)};save();$('#dlg').close();render()}catch(x){alert('That file is not a valid backup.')}})};
+if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
+render();
+</script></body></html>
